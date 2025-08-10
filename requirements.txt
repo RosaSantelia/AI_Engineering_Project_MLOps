@@ -1,0 +1,15 @@
+# Python 3.10 recommended
+fastapi==0.95.2
+uvicorn==0.22.0
+transformers==4.54.1
+datasets==4.0.0
+torch==2.7.0
+accelerate==1.8.1
+scikit-learn==1.2.2
+pandas==2.2.1
+protobuf==4.24.0
+prometheus-client==0.16.0
+pytest==8.3.5
+requests==2.31.0
+python-multipart==0.0.6
+gunicorn==22.1.0
