@@ -22,6 +22,10 @@ jobs:
         pip install -r requirements.txt
         pip install huggingface_hub
 
+    - name: Run unit tests
+      run: |
+        pytest tests/test_model.py
+
     - name: Train and evaluate model
       run: |
         python training/train.py
