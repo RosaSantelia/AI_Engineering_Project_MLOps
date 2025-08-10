@@ -1,0 +1,65 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    name: Build and Test
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    
+    - name: Set PYTHONPATH for tests
+      run: echo "PYTHONPATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install huggingface_hub pytest 
+
+    - name: Run unit tests
+      run: |
+        pytest tests/
+
+    - name: Train and evaluate model
+      run: |
+        python training/train.py
+
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to Hugging Face Hub
+    needs: build-test # Questo job verrà eseguito solo dopo che il job 'build-test' è stato completato con successo
+    if: success() # Assicura che il deploy parta solo se il job precedente ha avuto successo
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # Necessario per fare il push
+        
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install huggingface_hub
+
+    - name: Login to Hugging Face Hub
+      uses: huggingface/login@v0
+      env:
+        HF_HUB_TOKEN: ${{ secrets.HF_HUB_TOKEN }}
+
+    - name: Push model to Hugging Face Hub
+      run: |
+        python training/push_to_hub.py
