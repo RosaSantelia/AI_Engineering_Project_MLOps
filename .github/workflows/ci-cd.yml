@@ -26,10 +26,9 @@ jobs:
       run: |
         python training/train.py
 
-    - name: Login to Hugging Face Hub
-      uses: huggingface/setup-hf-cli@v1
-      with:
-        token: ${{ secrets.HF_TOKEN }}
+    - name: Login to Hugging Face
+      run: |
+          huggingface-cli login --token ${{ secrets.HF_TOKEN }}
 
 
     - name: Push model to Hub
