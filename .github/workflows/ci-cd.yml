@@ -36,30 +36,25 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    name: Deploy to Hugging Face Hub
-    needs: build-test
-    if: success()
+    name: Deploy to Hugging Face Space
+    needs: build-test # Questo job verrà eseguito solo dopo che il job 'build-test' è stato completato con successo
+    if: success() # Assicura che il deploy parta solo se il job precedente ha avuto successo
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0
-        
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
+        fetch-depth: 0 # Necessario per la sincronizzazione completa con Git
+        lfs: true # Necessario se usi file di grandi dimensioni
 
-    - name: Install dependencies
+    - name: Configure Git for Push
       run: |
-        python -m pip install --upgrade pip
-        pip install huggingface_hub
+        git config user.email "actions@github.com"
+        git config user.name "GitHub Actions"
 
-    - name: Login to Hugging Face Hub
-      uses: huggingface/login@v1
+    - name: Sync to Hugging Face Space
       env:
-        HF_HUB_TOKEN: ${{ secrets.HF_HUB_TOKEN }}
-
-    - name: Push model to Hugging Face Hub
+        HF_TOKEN: ${{ secrets.HF_HUB_TOKEN }}
+        SPACE_REPO: "https://huggingface.co/spaces/RosaSantelia/rosa-twitter-sentiment"
       run: |
-        python training/push_to_hub.py
+        git remote add hf $SPACE_REPO
+        git push -f hf main
