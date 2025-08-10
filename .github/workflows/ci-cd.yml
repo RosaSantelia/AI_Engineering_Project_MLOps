@@ -56,7 +56,7 @@ jobs:
         pip install huggingface_hub
 
     - name: Login to Hugging Face Hub
-      uses: huggingface/login@v0
+      uses: huggingface/actions/login@v0
       env:
         HF_HUB_TOKEN: ${{ secrets.HF_HUB_TOKEN }}
 
