@@ -1,12 +1,12 @@
-name: CI/CD Pipeline
+name: CI Pipeline
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  build-test-and-deploy:
-    name: Build, Test and Deploy
+  build-test:
+    name: Build and Test 
     runs-on: ubuntu-latest
     
     steps:
