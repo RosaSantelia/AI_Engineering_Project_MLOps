@@ -34,6 +34,7 @@ jobs:
       run: |
         python training/train.py
 
+  
   deploy:
     runs-on: ubuntu-latest
     name: Deploy to Hugging Face Space
@@ -54,7 +55,8 @@ jobs:
     - name: Sync to Hugging Face Space
       env:
         HF_TOKEN: ${{ secrets.HF_HUB_TOKEN }}
-        SPACE_REPO: "https://huggingface.co/spaces/RosaSantelia/rosa-twitter-sentiment"
+        HF_USERNAME: RosaSantelia # Sostituisci con il tuo username
+        HF_SPACE: rosa-twitter-sentiment # Sostituisci con il nome del tuo Space
       run: |
-        git remote add hf $SPACE_REPO
+        git remote add hf "https://${{ env.HF_USERNAME }}:${{ env.HF_TOKEN }}@huggingface.co/spaces/${{ env.HF_USERNAME }}/${{ env.HF_SPACE }}"
         git push -f hf main
