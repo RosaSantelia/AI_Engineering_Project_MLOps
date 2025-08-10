@@ -5,23 +5,10 @@ on:
     branches: [ "main" ]
 
 jobs:
- cd:
+ Deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
     
-    - name: Download trained model artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: trained-model
-        path: ./my_sentiment_model
-
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
-
     - name: Install Hugging Face Hub library
       run: pip install huggingface_hub
 
