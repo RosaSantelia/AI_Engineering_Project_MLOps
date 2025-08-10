@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  test:
+  Tests:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
@@ -24,6 +24,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install huggingface_hub
+    
+    - name: Download trained model artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: trained-model
+        path: ./my_sentiment_model
 
     - name: Run unit tests
       run: |
