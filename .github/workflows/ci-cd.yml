@@ -24,19 +24,18 @@ jobs:
 
     - name: Run unit tests
       run: |
-        pytest tests/test_model.py
+        pytest tests/
 
     - name: Train and evaluate model
       run: |
         python training/train.py
 
-    - name: Login to Hugging Face
-      run: |
-          huggingface-cli login --token ${{ secrets.HF_TOKEN }}
-
+    - name: Login to Hugging Face Hub
+      uses: huggingface/login@v0
+      env:
+        HF_HUB_TOKEN: ${{ secrets.HF_HUB_TOKEN }}
 
     - name: Push model to Hub
       run: |
         python training/push_to_hub.py
-        
 
