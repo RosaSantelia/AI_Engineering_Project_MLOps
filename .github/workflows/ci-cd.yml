@@ -27,9 +27,10 @@ jobs:
         python training/train.py
 
     - name: Login to Hugging Face Hub
-      uses: huggingface/login@v0
-      env:
-        HF_HUB_TOKEN: ${{ secrets.HF_HUB_TOKEN }}
+      uses: huggingface/huggingface-action@v1
+      with:
+        token: ${{ secrets.HF_TOKEN }}
+
 
     - name: Push model to Hub
       run: |
