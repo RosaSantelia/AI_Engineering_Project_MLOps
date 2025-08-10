@@ -38,4 +38,5 @@ jobs:
     - name: Push model to Hub
       run: |
         python training/push_to_hub.py
+        
 
