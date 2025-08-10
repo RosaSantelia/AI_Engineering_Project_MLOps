@@ -26,9 +26,9 @@ def main(sample=False, epochs=1):
     ds = load_dataset("cardiffnlp/tweet_eval", "sentiment")
 
     if sample:
-        # Usa solo 100 samples per train e 50 per eval
-        train_ds = ds["train"].select(range(100))
-        eval_ds = ds["validation"].select(range(50))
+        # Usa solo 50 samples per train e 25 per eval
+        train_ds = ds["train"].select(range(50))
+        eval_ds = ds["validation"].select(range(25))
     else:
         train_ds = ds["train"]
         eval_ds = ds["validation"]
@@ -49,8 +49,8 @@ def main(sample=False, epochs=1):
         per_device_train_batch_size=2,   # batch size piccolo per risorse limitate
         per_device_eval_batch_size=4,
         num_train_epochs=epochs,
-        save_strategy="epoch",
-        logging_steps=2, 
+        save_strategy=no,
+        logging_steps=1, 
         load_best_model_at_end=False,
         report_to=[],  # disabilita logging esterni
         seed=42,
