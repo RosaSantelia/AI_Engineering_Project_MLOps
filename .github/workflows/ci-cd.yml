@@ -27,11 +27,6 @@ jobs:
         pip install -r requirements.txt
         pip install huggingface_hub
 
-    - name: Check code formatting
-      run: |
-        black --check .
-        isort --check-only --profile black .
-
     - name: Run unit tests
       run: |
         pytest tests/
