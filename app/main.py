@@ -1,37 +1,42 @@
 # app/main.py
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from app.model import SentimentModel
-from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
-from fastapi.responses import Response
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
+import torch.nn.functional as F
 
-# Modello singleton
-model = SentimentModel()
+app = FastAPI()
 
-app = FastAPI(title="Sentiment API")
+# Caricamento modello e tokenizer all'avvio
+MODEL_NAME = "cardiffnlp/twitter-roberta-base-sentiment-latest"
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
 
-class TextIn(BaseModel):
+class TextInput(BaseModel):
     text: str
 
-# Metrics
-REQUESTS = Counter("sentiment_requests_total", "Total sentiment requests")
-ERRORS = Counter("sentiment_errors_total", "Total errors")
+@app.get("/")
+async def root():
+    return {"message": "API Sentiment Analysis attiva"}
 
 @app.get("/health")
-def health():
+async def health():
     return {"status": "ok"}
 
 @app.post("/predict")
-def predict(payload: TextIn):
-    REQUESTS.inc()
+async def predict(input: TextInput):
     try:
-        res = model.predict([payload.text])
-        return {"predictions": res}
-    except Exception as e:
-        ERRORS.inc()
-        return {"error": str(e)}
+        # Tokenizzazione
+        inputs = tokenizer(input.text, return_tensors="pt", truncation=True)
+        with torch.no_grad():
+            outputs = model(**inputs)
+        logits = outputs.logits
+        probs = F.softmax(logits, dim=1)
+        scores = probs.tolist()[0]
 
-@app.get("/metrics")
-def metrics():
-    data = generate_latest()
-    return Response(content=data, media_type=CONTENT_TYPE_LATEST)
+        labels = ["negative", "neutral", "positive"]
+        predictions = [{"label": label, "score": score} for label, score in zip(labels, scores)]
+
+        return {"predictions": predictions}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
