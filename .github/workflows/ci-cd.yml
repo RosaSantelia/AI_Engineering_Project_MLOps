@@ -35,15 +35,4 @@ jobs:
       run: |
         python training/train.py
     
-    - name: Install Hugging Face CLI
-      run: |
-        python -m pip install --upgrade pip
-        pip install huggingface_hub
     
-    - name: Login to Hugging Face
-      run: |
-        huggingface-cli login --token ${{ secrets.HF_TOKEN }}
-
-    - name: Push model to Hugging Face Hub
-      run: |
-        python training/push_to_hub.py
