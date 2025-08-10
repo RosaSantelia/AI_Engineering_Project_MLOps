@@ -49,7 +49,7 @@ def main(sample=False, epochs=1):
         per_device_train_batch_size=2,   # batch size piccolo per risorse limitate
         per_device_eval_batch_size=4,
         num_train_epochs=epochs,
-        save_strategy=no,
+        save_strategy="epoch",
         logging_steps=2, 
         load_best_model_at_end=False,
         report_to=[],  # disabilita logging esterni
