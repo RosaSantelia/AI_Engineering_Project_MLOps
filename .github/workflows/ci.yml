@@ -1,11 +1,11 @@
-name: CI/CD Pipeline
+name: CI Pipeline
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  test-and-deploy:
+  test:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
@@ -30,12 +30,4 @@ jobs:
       run: |
         python training/train.py
 
-    - name: Login to Hugging Face Hub
-      uses: huggingface/login@v0
-      env:
-        HF_HUB_TOKEN: ${{ secrets.HF_HUB_TOKEN }}
-
-    - name: Push model to Hub
-      run: |
-        python training/push_to_hub.py
 
