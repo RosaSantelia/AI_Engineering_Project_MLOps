@@ -3,6 +3,9 @@ name: Monitoring TweetEval
 on:
   push:
     branches: [ main ]
+  schedule:
+    - cron: '0 2 * * *'  # ogni giorno alle 2:00 UTC
+  workflow_dispatch:     # per eseguire manualmente se vuoi
 
 jobs:
   run-monitoring-test:
@@ -24,4 +27,4 @@ jobs:
         pip install datasets transformers torch matplotlib scikit-learn
 
     - name: Run monitoring test script
-      run: python scripts/monitoring.py
+      run: python monitoring/monitoring.py

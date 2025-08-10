@@ -37,13 +37,13 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Deploy to Hugging Face Hub
-    needs: build-test # Questo job verrà eseguito solo dopo che il job 'build-test' è stato completato con successo
-    if: success() # Assicura che il deploy parta solo se il job precedente ha avuto successo
+    needs: build-test
+    if: success()
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0 # Necessario per fare il push
+        fetch-depth: 0
         
     - name: Set up Python
       uses: actions/setup-python@v5
@@ -56,7 +56,7 @@ jobs:
         pip install huggingface_hub
 
     - name: Login to Hugging Face Hub
-      uses: huggingface/actions/login@v0
+      uses: huggingface/login@v1
       env:
         HF_HUB_TOKEN: ${{ secrets.HF_HUB_TOKEN }}
 
