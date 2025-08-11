@@ -53,10 +53,11 @@ def analyze_and_plot():
                      horizontalalignment="center",
                      color="white" if cm[i, j] > thresh else "black")
 
-    report_dir = os.path.join(os.path.dirname(__file__), '..', 'reports')
+    report_dir = os.path.join(os.path.dirname(__file__), 'reports')
     os.makedirs(report_dir, exist_ok=True)
-    plt.savefig(os.path.join(report_dir, 'confusion_matrix.png'))
-    print("Matrice di confusione salvata in reports/confusion_matrix.png")
+    save_path = os.path.join(report_dir, 'confusion_matrix.png')
+    plt.savefig(save_path)
+    print(f"Matrice di confusione salvata in {os.path.abspath(save_path)}")
 
 def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -74,7 +75,7 @@ def main():
 
     samples = dataset['test'].shuffle(seed=42).select(range(10))
 
-    texts = list(samples['text'])  # fix qui
+    texts = list(samples['text'])
     predicted_labels = predict_sentiment_batch(texts, tokenizer, model, device)
     true_labels = [LABELS[label] for label in samples['label']]
 
