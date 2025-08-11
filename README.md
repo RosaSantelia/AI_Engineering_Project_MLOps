@@ -1,21 +1,25 @@
 MLOps per l'Analisi del Sentiment su Twitter
+
 🏆 Panoramica del Progetto
+
 Questo repository presenta una soluzione end-to-end di MLOps per l'analisi del sentiment su Twitter. Il progetto è stato costruito per dimostrare le pratiche di ingegneria del machine learning, includendo la containerizzazione con Docker, l'automazione del testing e del deployment con GitHub Actions e il monitoraggio continuo del modello.
 
 L'obiettivo è classificare il sentiment di un testo in una delle tre categorie: positivo, neutrale o negativo, utilizzando un modello pre-addestrato basato su RoBERTa.
 
 🚀 Caratteristiche Principali
+
 Analisi del Sentiment: Utilizzo del modello cardiffnlp/twitter-roberta-base-sentiment-latest per predizioni accurate.
 
-API (FastAPI): Un'API RESTful robusta per l'inferenza del modello in tempo reale.
+- API (FastAPI): Un'API RESTful robusta per l'inferenza del modello in tempo reale.
 
-Containerizzazione (Docker): Un ambiente isolato e riproducibile per l'applicazione e le sue dipendenze.
+- Containerizzazione (Docker): Un ambiente isolato e riproducibile per l'applicazione e le sue dipendenze.
 
-Automazione CI/CD: Pipeline di GitHub Actions per l'integrazione e il deployment continuo.
+- Automazione CI/CD: Pipeline di GitHub Actions per l'integrazione e il deployment continuo.
 
-Monitoraggio Continuo: Un sistema di monitoraggio automatizzato per valutare periodicamente le performance del modello e prevenire la deriva (model drift).
+- Monitoraggio Continuo: Un sistema di monitoraggio automatizzato per valutare periodicamente le performance del modello e prevenire la deriva (model drift).
 
 📂 Struttura del Progetto
+
 La struttura del progetto è organizzata in modo modulare per separare le diverse fasi del ciclo di vita MLOps.
 
 .
@@ -52,14 +56,17 @@ La struttura del progetto è organizzata in modo modulare per separare le divers
 └── setup_conda.sh
 
 🛠 Guida Rapida per gli Sviluppatori
+
 Prerequisiti
+
 Assicurati di avere installati i seguenti strumenti:
 
-Git
+- Git
 
-Docker
+- Docker
 
 Avvio dell'API (con Docker)
+
 Segui questi passaggi per avviare l'API di sentiment analysis in locale.
 
 Clona il repository:
@@ -75,56 +82,46 @@ Avvia l'API:
 
 docker run -p 8000:8000 sentiment-analysis
 
-L'API sarà disponibile all'indirizzo http://localhost:8000. Puoi testare gli endpoint e visualizzare la documentazione interattiva tramite l'interfaccia Swagger UI all'indirizzo http://localhost:8000/docs.
+L'API sarà disponibile all'indirizzo a cui sarai dirottato dal popup a monitor e potrai testare gli endopoint (ricordati di configurare che la porta sia aperta e non privata).
+
+Test degli Endpoint dell'API
+
+Per testare l'endpoint di predizione /predict dell'API, puoi utilizzare lo strumento curl con il seguente comando:
+
+curl -X POST "http://localhost:8000/predict" -H "Content-Type: application/json" -d '{"text":"I love this new project!"}'
+
+Questo comando invierà una richiesta POST all'API con un testo di esempio e riceverai una risposta con il sentiment predetto.
 
 📈 Pipeline CI/CD e Monitoraggio
+
 Il progetto integra due pipeline di GitHub Actions per automatizzare il ciclo di vita del modello.
 
-Workflow
-
-Trigger
-
-Descrizione
-
-ci-cd.yml
-
-push sul branch main
+CI_CD PIPELINE:
 
 Esegue i test, addestra il modello, e lo deploysu Hugging Face Spaces se tutti i passaggi sono superati.
 
-monitoring.yml
-
-push e cron pianificato
+MONITORING PIPELINE:
 
 Esegue lo script monitoring.py periodicamente per valutare le performance del modello in produzione.
-
-Monitoraggio Automatico
-Il file .github/workflows/monitoring.yml esegue automaticamente:
-
-Ogni commit su main
-
-Ogni giorno alle 2:00 UTC
-
-Su richiesta manuale
-
-Si tratta di un modulo di monitoraggio continuo per valutare le performance del modello di analisi del sentiment su dati di test o reali.
 
 Lo script monitoring/monitoring.py esegue predizioni batch, salva i risultati in CSV, genera matrici di confusione e un report HTML.
 
 La pipeline è automatizzata tramite GitHub Actions (.github/workflows/monitoring.yml), eseguita:
 
-Su ogni push al branch main
+- Su ogni push al branch main
 
-Ogni giorno alle 2:00 UTC
+- Ogni giorno alle 2:00 UTC
 
-Manualmente tramite trigger manuale
+- Manualmente tramite trigger manuale
 
 I report sono caricati come artifact scaricabili dall’interfaccia Actions di GitHub.
 
-Avvio manuale del monitoraggio
+Avvio manuale del monitoraggio:
+
 Dal tab Actions su GitHub, seleziona il workflow Monitoring TweetEval e clicca su Run workflow.
 
 ❓ FAQ Utenti Finali
+
 1. Che modello viene usato?
 Viene utilizzato il modello cardiffnlp/twitter-roberta-base-sentiment-latest di HuggingFace, specificamente addestrato su dati di Twitter.
 
