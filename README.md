@@ -1,4 +1,4 @@
-# AI_Engineering_Projects_MLOps_rivisto
+# AI_Engineering_Projects_MLOps
 My AI Engineering Master's Projects - MLOps
 
 # Documentazione Tecnica del Progetto di Sentiment Analysis
