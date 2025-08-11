@@ -7,7 +7,6 @@ Questo repository presenta una soluzione end-to-end di MLOps per l'analisi del s
 L'obiettivo è classificare il sentiment di un testo in una delle tre categorie: positivo, neutrale o negativo, utilizzando un modello pre-addestrato basato su RoBERTa.
 
 🚀 Caratteristiche Principali
-
 Analisi del Sentiment: Utilizzo del modello cardiffnlp/twitter-roberta-base-sentiment-latest per predizioni accurate.
 
 - API (FastAPI): Un'API RESTful robusta per l'inferenza del modello in tempo reale.
@@ -103,6 +102,17 @@ Esegue i test, addestra il modello, e lo deploysu Hugging Face Spaces se tutti i
 MONITORING PIPELINE:
 
 Esegue lo script monitoring.py periodicamente per valutare le performance del modello in produzione.
+
+Monitoraggio Automatico
+Il file .github/workflows/monitoring.yml esegue automaticamente:
+
+Ogni commit su main
+
+Ogni giorno alle 2:00 UTC
+
+Su richiesta manuale
+
+Si tratta di un modulo di monitoraggio continuo per valutare le performance del modello di analisi del sentiment su dati di test o reali.
 
 Lo script monitoring/monitoring.py esegue predizioni batch, salva i risultati in CSV, genera matrici di confusione e un report HTML.
 
