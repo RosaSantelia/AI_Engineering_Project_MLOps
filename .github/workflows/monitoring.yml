@@ -29,7 +29,7 @@ jobs:
     - name: Run monitoring test script
       run: python monitoring/monitoring.py
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: monitoring-reports
         path: |
