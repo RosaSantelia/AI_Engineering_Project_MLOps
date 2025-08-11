@@ -1,22 +1,26 @@
-from fastapi import FastAPI, Request, HTTPException, Form
-from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
-from app.model import SentimentModel
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from .model import SentimentModel
 
 app = FastAPI()
+
 sentiment_model = SentimentModel()
 
-templates = Jinja2Templates(directory="app/templates")  # crea questa cartella e ci metti l'html
+class TextInput(BaseModel):
+    text: str
 
-@app.get("/predict", response_class=HTMLResponse)
-async def get_predict_form(request: Request):
-    # Mostra il form per inserire il tweet
-    return templates.TemplateResponse("predict_form.html", {"request": request, "result": None})
+@app.get("/")
+async def root():
+    return {"message": "API Sentiment Analysis attiva"}
 
-@app.post("/predict", response_class=HTMLResponse)
-async def post_predict_form(request: Request, text: str = Form(...)):
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
+
+@app.post("/predict")
+async def predict(input: TextInput):
     try:
-        prediction = sentiment_model.predict(texts=[text])[0]
+        predictions = sentiment_model.predict(texts=[input.text])
+        return {"predictions": predictions}
     except Exception as e:
-        prediction = f"Errore durante la predizione: {str(e)}"
-    return templates.TemplateResponse("predict_form.html", {"request": request, "result": prediction, "text": text})
+        raise HTTPException(status_code=500, detail=str(e))
