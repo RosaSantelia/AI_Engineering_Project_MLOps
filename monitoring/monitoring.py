@@ -114,9 +114,9 @@ def main():
 
     # Seleziona un sottoinsieme di 10 esempi dal test set
     samples = dataset['test'].shuffle(seed=42).select(range(10))
-    
+
     # Esegui la predizione per tutti i campioni
-    texts = samples['text']
+    texts = samples['text'].tolist()  # <-- Modifica qui: aggiungi .tolist()
     predicted_labels = predict_sentiment_batch(texts, tokenizer, model)
     true_labels = [LABELS[label] for label in samples['label']]
     
