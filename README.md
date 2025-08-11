@@ -1,22 +1,22 @@
-# AI_Engineering_Projects_MLOps
-My AI Engineering Master's Projects - MLOps
+MLOps per l'Analisi del Sentiment su Twitter
+🏆 Panoramica del Progetto
+Questo repository presenta una soluzione end-to-end di MLOps per l'analisi del sentiment su Twitter. Il progetto è stato costruito per dimostrare le pratiche di ingegneria del machine learning, includendo la containerizzazione con Docker, l'automazione del testing e del deployment con GitHub Actions e il monitoraggio continuo del modello.
 
-# Documentazione Tecnica del Progetto di Sentiment Analysis
+L'obiettivo è classificare il sentiment di un testo in una delle tre categorie: positivo, neutrale o negativo, utilizzando un modello pre-addestrato basato su RoBERTa.
 
-Questo progetto implementa un sistema di analisi del sentiment utilizzando un modello pre-addestrato cardiffnlp/twitter-roberta-base-sentiment-latest di HuggingFace.
+🚀 Caratteristiche Principali
+Analisi del Sentiment: Utilizzo del modello cardiffnlp/twitter-roberta-base-sentiment-latest per predizioni accurate.
 
-Il sistema è organizzato in un flusso MLOps che comprende:
+API (FastAPI): Un'API RESTful robusta per l'inferenza del modello in tempo reale.
 
-- Addestramento e valutazione del modello
+Containerizzazione (Docker): Un ambiente isolato e riproducibile per l'applicazione e le sue dipendenze.
 
-- Deploy su HuggingFace Hub
+Automazione CI/CD: Pipeline di GitHub Actions per l'integrazione e il deployment continuo.
 
-- Pipeline di monitoraggio automatico per valutare periodicamente le performance.
+Monitoraggio Continuo: Un sistema di monitoraggio automatizzato per valutare periodicamente le performance del modello e prevenire la deriva (model drift).
 
-
-📂 Struttura del progetto
-
-La struttura del progetto è organizzata in modo modulare per separare le diverse fasi di sviluppo e deployment:
+📂 Struttura del Progetto
+La struttura del progetto è organizzata in modo modulare per separare le diverse fasi del ciclo di vita MLOps.
 
 .
 ├── .github/
@@ -51,119 +51,88 @@ La struttura del progetto è organizzata in modo modulare per separare le divers
 ├── run_tests.sh
 └── setup_conda.sh
 
-app/: Contiene il codice dell'API (FastAPI) e la logica del modello.
+🛠 Guida Rapida per gli Sviluppatori
+Prerequisiti
+Assicurati di avere installati i seguenti strumenti:
 
-training/: Script per l'addestramento e la valutazione del modello, inclusa la logica per il push su Hugging Face.
+Git
 
-monitoring/: Script per il monitoraggio continuo delle performance del modello.
+Docker
 
-tests/: Test unitari e di integrazione per l'API e il modello.
+Avvio dell'API (con Docker)
+Segui questi passaggi per avviare l'API di sentiment analysis in locale.
 
-.github/workflows/: File di configurazione per le pipeline di GitHub Actions (CI/CD e Monitoraggio).
+Clona il repository:
 
-Dockerfile: Definizione dell'ambiente containerizzato per l'applicazione.
-
-requirements.txt: Elenco delle dipendenze Python del progetto.
-
-⚙️ Installazione e configurazione
-
-1️⃣ Clonare il repository
-
-bash
 git clone https://github.com/RosaSantelia/AI_Engineering_Projects_MLOps_rivisto.git
 cd AI_Engineering_Projects_MLOps_rivisto
 
-2️⃣ Creare e attivare un ambiente Conda
+Costruisci l'immagine Docker:
 
-bash
-conda create -n sentiment python=3.10
-conda activate sentiment
-
-3️⃣ Installare le dipendenze
-
-bash
-pip install -r requirements.txt
-
-
-🚀 Esecuzione in locale
-
-Addestrare e valutare il modello
-
-bash
-python training/train.py
-
-Monitoraggio locale
-
-bash
-python monitoring/monitoring.py
-
-🐳 Esecuzione con Docker
-
-bash
 docker build -t sentiment-analysis .
-docker run --rm sentiment-analysis
 
-🔄 Pipeline CI/CD
+Avvia l'API:
 
-Il file .github/workflows/ci-cd.yml gestisce:
+docker run -p 8000:8000 sentiment-analysis
 
-- Test unitari con pytest
+L'API sarà disponibile all'indirizzo http://localhost:8000. Puoi testare gli endpoint e visualizzare la documentazione interattiva tramite l'interfaccia Swagger UI all'indirizzo http://localhost:8000/docs.
 
-- Addestramento del modello
+📈 Pipeline CI/CD e Monitoraggio
+Il progetto integra due pipeline di GitHub Actions per automatizzare il ciclo di vita del modello.
 
-- Deploy automatico su HuggingFace Hub
+Workflow
 
-📈 Pipeline di monitoraggio Automatico
+Trigger
 
+Descrizione
+
+ci-cd.yml
+
+push sul branch main
+
+Esegue i test, addestra il modello, e lo deploysu Hugging Face Spaces se tutti i passaggi sono superati.
+
+monitoring.yml
+
+push e cron pianificato
+
+Esegue lo script monitoring.py periodicamente per valutare le performance del modello in produzione.
+
+Monitoraggio Automatico
 Il file .github/workflows/monitoring.yml esegue automaticamente:
 
-- Ogni commit su main
+Ogni commit su main
 
-- Ogni giorno alle 2:00 UTC
+Ogni giorno alle 2:00 UTC
 
-- Su richiesta manuale
+Su richiesta manuale
 
 Si tratta di un modulo di monitoraggio continuo per valutare le performance del modello di analisi del sentiment su dati di test o reali.
 
-- Lo script `monitoring/monitoring.py` esegue predizioni batch, salva i risultati in CSV, genera matrici di confusione e un report HTML.
+Lo script monitoring/monitoring.py esegue predizioni batch, salva i risultati in CSV, genera matrici di confusione e un report HTML.
 
-- La pipeline è automatizzata tramite GitHub Actions (`.github/workflows/monitoring.yml`), eseguita:
-  - Su ogni push al branch `main`
-  - Ogni giorno alle 2:00 UTC
-  - Manualmente tramite trigger manuale
+La pipeline è automatizzata tramite GitHub Actions (.github/workflows/monitoring.yml), eseguita:
+
+Su ogni push al branch main
+
+Ogni giorno alle 2:00 UTC
+
+Manualmente tramite trigger manuale
 
 I report sono caricati come artifact scaricabili dall’interfaccia Actions di GitHub.
 
-### Avvio manuale del monitoraggio
+Avvio manuale del monitoraggio
+Dal tab Actions su GitHub, seleziona il workflow Monitoring TweetEval e clicca su Run workflow.
 
-Dal tab **Actions** su GitHub, seleziona il workflow **Monitoring TweetEval** e clicca su **Run workflow**.
-
-
-📖 Guida rapida per utenti finali
-Inserisci il testo che vuoi analizzare nel modello
-
-Ottieni la classificazione: positive, neutral, negative
-
-Consulta i log in data/sentiment_log.csv per vedere risultati e confronto con etichette reali
-
-📊 Esempio di output
-Esempio di predizione sentiment:
-
-plaintext
-Input: "I love working with this team!"
-Predicted: positive
-True label: positive
-
-❓ FAQ
+❓ FAQ Utenti Finali
 1. Che modello viene usato?
-cardiffnlp/twitter-roberta-base-sentiment-latest di HuggingFace.
+Viene utilizzato il modello cardiffnlp/twitter-roberta-base-sentiment-latest di HuggingFace, specificamente addestrato su dati di Twitter.
 
 2. Come viene testato?
-Con dataset pubblico TweetEval.
+Il modello è testato automaticamente utilizzando un sottoinsieme del dataset pubblico TweetEval per verificare le sue performance in modo continuo.
 
 3. Qual è l'ambiente di sviluppo e testing?
-La fase di sviluppo è stata testata utilizzando Conda come ambiente virtuale.
-Successivamente, il progetto è stato containerizzato con Docker per garantire portabilità.
+La fase di sviluppo è stata testata inizialmente con Conda. Per garantire la portabilità e la riproducibilità, l'intero progetto è stato poi containerizzato con Docker.
 
 4. Come posso avviare il monitoraggio manualmente?
-Dalla sezione Actions di GitHub, selezionare il workflow Monitoring TweetEval e cliccare su Run workflow.
+Dalla sezione Actions del repository su GitHub, devi selezionare il workflow Monitoring TweetEval e cliccare sul pulsante Run workflow.
