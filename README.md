@@ -98,7 +98,7 @@ Il progetto integra due pipeline di GitHub Actions per automatizzare il ciclo di
 
 ### CI_CD PIPELINE:
 
-Esegue i test, addestra il modello, e lo deploysu Hugging Face Spaces se tutti i passaggi sono superati.
+Esegue i test, addestra il modello ed effettua il deploy su Hugging Face Spaces se tutti i passaggi sono superati.
 
 ### MONITORING PIPELINE:
 
@@ -120,7 +120,7 @@ Avvio manuale del monitoraggio:
 
 Dal tab Actions su GitHub, seleziona il workflow Monitoring TweetEval e clicca su Run workflow.
 
-### FAQ Utenti Finali
+### ❓ FAQ Utenti Finali
 
 1. Che modello viene usato?
 Viene utilizzato il modello cardiffnlp/twitter-roberta-base-sentiment-latest di HuggingFace, specificamente addestrato su dati di Twitter.
