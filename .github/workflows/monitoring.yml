@@ -3,6 +3,9 @@ name: Monitoring TweetEval
 on:
   push:
     branches: [ main ]
+  schedule:
+    - cron: '0 2 * * *'  # ogni giorno alle 2:00 UTC
+  workflow_dispatch:     # per eseguire manualmente se vuoi
 
 jobs:
   run-monitoring-test:
