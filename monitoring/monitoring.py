@@ -57,7 +57,48 @@ def analyze_and_plot():
     os.makedirs(report_dir, exist_ok=True)
     save_path = os.path.join(report_dir, 'confusion_matrix.png')
     plt.savefig(save_path)
+    plt.close()
     print(f"Matrice di confusione salvata in {os.path.abspath(save_path)}")
+
+def generate_html_report():
+    log_file = os.path.join(os.path.dirname(__file__), '..', 'data', 'sentiment_log.csv')
+    img_path = os.path.join(os.path.dirname(__file__), 'reports', 'confusion_matrix.png')
+    report_html_path = os.path.join(os.path.dirname(__file__), 'reports', 'report.html')
+
+    if not os.path.exists(log_file) or not os.path.exists(img_path):
+        print("File necessari per il report non trovati.")
+        return
+
+    df = pd.read_csv(log_file)
+    table_html = df.to_html(index=False, classes='table', border=1)
+
+    html_content = f"""
+    <html>
+    <head>
+      <title>Report Monitoring TweetEval</title>
+      <style>
+        body {{ font-family: Arial, sans-serif; margin: 40px; }}
+        h1 {{ color: #333; }}
+        .table {{ border-collapse: collapse; width: 100%; }}
+        .table th, .table td {{ padding: 8px 12px; border: 1px solid #ccc; }}
+        .table th {{ background-color: #f2f2f2; }}
+        img {{ max-width: 600px; height: auto; margin-top: 20px; }}
+      </style>
+    </head>
+    <body>
+      <h1>Report Monitoring TweetEval</h1>
+      <h2>Matrice di Confusione</h2>
+      <img src="confusion_matrix.png" alt="Matrice di Confusione"/>
+      <h2>Log Sentiment</h2>
+      {table_html}
+    </body>
+    </html>
+    """
+
+    with open(report_html_path, 'w', encoding='utf-8') as f:
+        f.write(html_content)
+
+    print(f"Report HTML salvato in {report_html_path}")
 
 def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -83,6 +124,8 @@ def main():
         log_sentiment(text, pred, true)
 
     analyze_and_plot()
+    generate_html_report()
 
 if __name__ == "__main__":
     main()
+
