@@ -1,5 +1,4 @@
 # Python 3.10 recommended
-
 fastapi==0.95.2
 uvicorn==0.22.0
 transformers==4.54.1
@@ -15,9 +14,6 @@ python-multipart==0.0.6
 gunicorn==23.0.0
 httpx==0.24.1
 evaluate==0.4.0
-pandas==2.2.1
 matplotlib==3.7.1
 numpy==1.26.4
-evaluate==0.4.0
-matplotlib==3.7.1
 huggingface-hub>=0.14.0

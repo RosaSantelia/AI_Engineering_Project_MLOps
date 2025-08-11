@@ -9,8 +9,9 @@ COPY requirements.txt ./
 COPY . .
 
 # Aggiorna pip e installa le dipendenze
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt \
+    && rm -rf /root/.cache/pip
 
 # Espone la porta per FastAPI
 EXPOSE 8000
