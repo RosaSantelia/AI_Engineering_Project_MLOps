@@ -1,21 +1,25 @@
 MLOps per l'Analisi del Sentiment su Twitter
+
 🏆 Panoramica del Progetto
+
 Questo repository presenta una soluzione end-to-end di MLOps per l'analisi del sentiment su Twitter. Il progetto è stato costruito per dimostrare le pratiche di ingegneria del machine learning, includendo la containerizzazione con Docker, l'automazione del testing e del deployment con GitHub Actions e il monitoraggio continuo del modello.
 
 L'obiettivo è classificare il sentiment di un testo in una delle tre categorie: positivo, neutrale o negativo, utilizzando un modello pre-addestrato basato su RoBERTa.
 
 🚀 Caratteristiche Principali
-Analisi del Sentiment: Utilizzo del modello cardiffnlp/twitter-roberta-base-sentiment-latest per predizioni accurate.
 
-API (FastAPI): Un'API RESTful robusta per l'inferenza del modello in tempo reale.
+- Analisi del Sentiment: Utilizzo del modello cardiffnlp/twitter-roberta-base-sentiment-latest per predizioni accurate.
 
-Containerizzazione (Docker): Un ambiente isolato e riproducibile per l'applicazione e le sue dipendenze.
+- API (FastAPI): Un'API RESTful robusta per l'inferenza del modello in tempo reale.
 
-Automazione CI/CD: Pipeline di GitHub Actions per l'integrazione e il deployment continuo.
+- Containerizzazione (Docker): Un ambiente isolato e riproducibile per l'applicazione e le sue dipendenze.
 
-Monitoraggio Continuo: Un sistema di monitoraggio automatizzato per valutare periodicamente le performance del modello e prevenire la deriva (model drift).
+- Automazione CI/CD: Pipeline di GitHub Actions per l'integrazione e il deployment continuo.
+
+- Monitoraggio Continuo: Un sistema di monitoraggio automatizzato per valutare periodicamente le performance del modello e prevenire la deriva (model drift).
 
 📂 Struttura del Progetto
+
 La struttura del progetto è organizzata in modo modulare per separare le diverse fasi del ciclo di vita MLOps.
 
 .
@@ -52,14 +56,17 @@ La struttura del progetto è organizzata in modo modulare per separare le divers
 └── setup_conda.sh
 
 🛠 Guida Rapida per gli Sviluppatori
+
 Prerequisiti
+
 Assicurati di avere installati i seguenti strumenti:
 
-Git
+- Git
 
-Docker
+- Docker
 
 Avvio dell'API (con Docker)
+
 Segui questi passaggi per avviare l'API di sentiment analysis in locale.
 
 Clona il repository:
@@ -78,6 +85,7 @@ docker run -p 8000:8000 sentiment-analysis
 L'API sarà disponibile all'indirizzo http://localhost:8000. Puoi testare gli endpoint e visualizzare la documentazione interattiva tramite l'interfaccia Swagger UI all'indirizzo http://localhost:8000/docs.
 
 📈 Pipeline CI/CD e Monitoraggio
+
 Il progetto integra due pipeline di GitHub Actions per automatizzare il ciclo di vita del modello.
 
 Workflow
@@ -99,6 +107,7 @@ push e cron pianificato
 Esegue lo script monitoring.py periodicamente per valutare le performance del modello in produzione.
 
 Monitoraggio Automatico
+
 Il file .github/workflows/monitoring.yml esegue automaticamente:
 
 Ogni commit su main
