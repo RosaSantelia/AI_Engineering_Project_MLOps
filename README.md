@@ -3,84 +3,101 @@ My AI Engineering Master's Projects - MLOps
 
 # Documentazione Tecnica del Progetto di Sentiment Analysis
 
-1. Panoramica del Progetto
-Questo progetto ha l'obiettivo di implementare e testare una soluzione MLOps per l'analisi del sentiment. Il cuore del sistema è un modello di analisi del sentiment basato su RoBERTa, in grado di classificare testi provenienti dai social media. Il progetto segue una metodologia MLOps completa, che include l'implementazione del modello, la sua validazione automatizzata e la preparazione per il deploy e il monitoraggio continuo.
+Questo progetto implementa un sistema di analisi del sentiment utilizzando un modello pre-addestrato cardiffnlp/twitter-roberta-base-sentiment-latest di HuggingFace.
+Il sistema è organizzato in un flusso MLOps che comprende:
 
-2. Architettura del Sistema
-2.1. Componenti Principali
-API (FastAPI): L'applicazione esposta tramite un server Uvicorn che gestisce le richieste HTTP. L'API ha un endpoint /predict che prende in input un testo e restituisce il sentiment predetto dal modello (positivo, neutro o negativo).
+- Addestramento e valutazione del modello
 
-Modello di Sentiment Analysis (RoBERTa): Viene utilizzato il modello pre-addestrato cardiffnlp/twitter-roberta-base-sentiment-latest. Questo modello è stato specificamente addestrato su dati di Twitter, rendendolo ideale per l'analisi del sentiment sui social media. Le etichette di output del modello sono mappate in negative (0), neutral (1) e positive (2).
+- Deploy su HuggingFace Hub
 
-Test di Valutazione: Lo script evaluate.py, situato nella cartella app/, esegue una valutazione automatizzata del modello. Carica il dataset pubblico tweet_eval, esegue le predizioni in batch e genera un classification_report dettagliato che mostra metriche come precisione, recall e F1-score. I test effettivi dell'API e del modello sono gestiti dai file test_api.py e test_train_smoke.py nella cartella tests/.
-
-2.2. Struttura delle Cartelle
-Il progetto è organizzato per separare il codice dell'applicazione, i test e la configurazione, seguendo le best practice dell'MLOps.
-
-.
-├── .github/                # Cartella per le configurazioni di GitHub Actions
-│   └── workflows/          # Definizione dei workflow CI/CD
-│       └── ci-cd.yml       # Workflow per il Continuous Integration e Continuous Deployment
-├── .pytest_cache/          # Cache generata da pytest
-├── app/                    # Codice dell'applicazione (API, modello, logica di valutazione)
-│   ├── evaluate.py         # Script per la valutazione del modello
-│   ├── main.py             # Endpoint dell'API FastAPI
-│   ├── model.py            # Logica del modello di sentiment analysis
-│   └── schema.py           # Definizione degli schemi di dati (Pydantic)
-├── docs/                   # Documentazione tecnica
-│   └── TROUBLESHOOTING.md  # Guida alla risoluzione dei problemi comuni
-├── prometheus/             # File di configurazione per il monitoraggio con Prometheus e Grafana
-│   ├── grafana-dashboard.json # Configurazione della dashboard di Grafana
-│   └── prometheus.yml      # Configurazione di Prometheus per la raccolta delle metriche
-├── tests/                  # Codice per i test
-│   ├── pytest.ini          # File di configurazione per pytest
-│   ├── test_api.py         # Test degli endpoint API
-├── .gitignore              # Elenco dei file e delle cartelle da ignorare in Git
-├── Dockerfile              # Definizione del container Docker per l'applicazione
-├── environment.yml         # Configurazione dell'ambiente Conda
-├── README.md               # Panoramica del progetto e guida rapida
-├── requirements.txt        # Elenco delle dipendenze Python (alternativa a environment.yml)
-├── run_tests.sh            # Script di shell per l'esecuzione dei test
-└── setup_conda.sh          # Script di shell per la configurazione dell'ambiente Conda
-
-3. Guida per gli Sviluppatori
-3.1. Prerequisiti
-Per eseguire e testare il progetto, è necessario avere installato :
-
-Docker Desktop (per Windows/macOS) o Docker Engine (per Linux).
-
-Git (per il controllo versione).
-
-3.2. Configurazione dell'Ambiente di Sviluppo
-Clone del repository: Clona il repository del progetto.
-
-Build dell'Immagine Docker: Dalla directory principale del progetto, esegui il seguente comando per costruire l'immagine Docker.
+- Pipeline di monitoraggio automatico per valutare periodicamente le performance.
 
 
-3.3. Esecuzione del Test
-Per eseguire i test, usa lo script run_tests.sh. Questo script è il modo più affidabile per lanciare tutti i test del progetto all'interno del container Docker.
+📂 Struttura del progetto
 
-docker run --rm sentiment-project ./run_tests.sh
+La struttura del progetto è organizzata in modo modulare per separare le diverse fasi di sviluppo e deployment.
 
-3.4. Esecuzione dell'API
-Per avviare l'API, utilizza il comando docker run per eseguire il container, mappando la porta 8000.
+app/: Contiene il codice dell'API (FastAPI) e la logica del modello.
 
-docker run -p 8000:8000 sentiment-project
+training/: Script per l'addestramento e la valutazione del modello, inclusa la logica per il push su Hugging Face.
 
-4. Pipeline CI/CD
-Questo progetto è progettato per essere integrato in una pipeline CI/CD (ad esempio con GitHub Actions). Il workflow tipico è il seguente:
+monitoring/: Script per il monitoraggio continuo delle performance del modello.
 
-Trigger: La pipeline si attiva ad ogni push o pull request sul branch principale.
+tests/: Test unitari e di integrazione per l'API e il modello.
 
-Fase di Build: L'immagine Docker viene costruita.
+.github/workflows/: File di configurazione per le pipeline di GitHub Actions (CI/CD e Monitoraggio).
 
-Fase di Test: Viene eseguito lo script di valutazione del modello. Se l'accuracy scende al di sotto di una soglia predefinita (es. 70%), il test fallisce e la pipeline si interrompe.
+Dockerfile: Definizione dell'ambiente containerizzato per l'applicazione.
 
-Fase di Deploy: Se tutti i test passano, il modello e l'API vengono deployati in produzione.
+requirements.txt: Elenco delle dipendenze Python del progetto.
 
-5. Monitoraggio e Manutenzione
-Una volta in produzione, il modello verrà monitorato utilizzando strumenti come :
+⚙️ Installazione e configurazione
+1️⃣ Clonare il repository
+bash
+git clone https://github.com/RosaSantelia/AI_Engineering_Projects_MLOps_rivisto.git
+cd AI_Engineering_Projects_MLOps_rivisto
+2️⃣ Creare e attivare un ambiente Conda
+bash
+conda create -n sentiment python=3.10
+conda activate sentiment
+3️⃣ Installare le dipendenze
+bash
+pip install -r requirements.txt
+🚀 Esecuzione in locale
+Addestrare e valutare il modello
+bash
+python training/train.py
+Monitoraggio locale
+bash
+python monitoring/monitoring.py
+🐳 Esecuzione con Docker
+bash
+docker build -t sentiment-analysis .
+docker run --rm sentiment-analysis
 
-Prometheus: Per la raccolta di metriche come la latenza delle richieste, il numero di errori e le performance del modello nel tempo.
+🔄 Pipeline CI/CD
+Il file .github/workflows/ci-cd.yml gestisce:
 
-Grafana: Per visualizzare i dati di Prometheus tramite dashboard personalizzate, consentendo una facile analisi e l'impostazione di alert.
+- Test unitari con pytest
+
+- Addestramento del modello
+
+- Deploy automatico su HuggingFace Hub
+
+📈 Pipeline di monitoraggio
+Il file .github/workflows/monitoring.yml esegue automaticamente:
+
+- Ogni commit su main
+
+- Ogni giorno alle 2:00 UTC
+
+- Su richiesta manuale
+
+📖 Guida rapida per utenti finali
+Inserisci il testo che vuoi analizzare nel modello
+
+Ottieni la classificazione: positive, neutral, negative
+
+Consulta i log in data/sentiment_log.csv per vedere risultati e confronto con etichette reali
+
+📊 Esempio di output
+Esempio di predizione sentiment:
+
+plaintext
+Input: "I love working with this team!"
+Predicted: positive
+True label: positive
+
+❓ FAQ
+1. Che modello viene usato?
+cardiffnlp/twitter-roberta-base-sentiment-latest di HuggingFace.
+
+2. Come viene testato?
+Con dataset pubblico TweetEval.
+
+3. Qual è l'ambiente di sviluppo e testing?
+La fase di sviluppo è stata testata utilizzando Conda come ambiente virtuale.
+Successivamente, il progetto è stato containerizzato con Docker per garantire portabilità.
+
+4. Come posso avviare il monitoraggio manualmente?
+Dalla sezione Actions di GitHub, selezionare il workflow Monitoring TweetEval e cliccare su Run workflow.
