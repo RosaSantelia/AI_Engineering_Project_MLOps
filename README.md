@@ -1,9 +1,10 @@
-# AI_Engineering_Projects_MLOps_rivisto
+# AI_Engineering_Projects_MLOps
 My AI Engineering Master's Projects - MLOps
 
 # Documentazione Tecnica del Progetto di Sentiment Analysis
 
 Questo progetto implementa un sistema di analisi del sentiment utilizzando un modello pre-addestrato cardiffnlp/twitter-roberta-base-sentiment-latest di HuggingFace.
+
 Il sistema è organizzato in un flusso MLOps che comprende:
 
 - Addestramento e valutazione del modello
@@ -15,7 +16,40 @@ Il sistema è organizzato in un flusso MLOps che comprende:
 
 📂 Struttura del progetto
 
-La struttura del progetto è organizzata in modo modulare per separare le diverse fasi di sviluppo e deployment.
+La struttura del progetto è organizzata in modo modulare per separare le diverse fasi di sviluppo e deployment:
+
+.
+├── .github/
+│   └── workflows/
+│       ├── ci-cd.yml
+│       └── monitoring.yml
+├── app/
+│   ├── __init__.py
+│   ├── evaluate.py
+│   ├── main.py
+│   ├── model.py
+│   └── schema.py
+├── data/
+├── docs/
+│   └── TROUBLESHOOTING.md
+├── monitoring/
+│   ├── reports/
+│   └── monitoring.py
+├── rosa-twitter-sentiment/
+├── tests/
+│   ├── pytest.ini
+│   ├── test_api.py
+│   └── test_model.py
+├── training/
+│   ├── push_to_hub.py
+│   └── train.py
+├── .gitignore
+├── Dockerfile
+├── environment.yml
+├── README.md
+├── requirements.txt
+├── run_tests.sh
+└── setup_conda.sh
 
 app/: Contiene il codice dell'API (FastAPI) e la logica del modello.
 
@@ -32,30 +66,45 @@ Dockerfile: Definizione dell'ambiente containerizzato per l'applicazione.
 requirements.txt: Elenco delle dipendenze Python del progetto.
 
 ⚙️ Installazione e configurazione
+
 1️⃣ Clonare il repository
+
 bash
 git clone https://github.com/RosaSantelia/AI_Engineering_Projects_MLOps_rivisto.git
 cd AI_Engineering_Projects_MLOps_rivisto
+
 2️⃣ Creare e attivare un ambiente Conda
+
 bash
 conda create -n sentiment python=3.10
 conda activate sentiment
+
 3️⃣ Installare le dipendenze
+
 bash
 pip install -r requirements.txt
+
+
 🚀 Esecuzione in locale
+
 Addestrare e valutare il modello
+
 bash
 python training/train.py
+
 Monitoraggio locale
+
 bash
 python monitoring/monitoring.py
+
 🐳 Esecuzione con Docker
+
 bash
 docker build -t sentiment-analysis .
 docker run --rm sentiment-analysis
 
 🔄 Pipeline CI/CD
+
 Il file .github/workflows/ci-cd.yml gestisce:
 
 - Test unitari con pytest
@@ -64,7 +113,8 @@ Il file .github/workflows/ci-cd.yml gestisce:
 
 - Deploy automatico su HuggingFace Hub
 
-📈 Pipeline di monitoraggio
+📈 Pipeline di monitoraggio Automatico
+
 Il file .github/workflows/monitoring.yml esegue automaticamente:
 
 - Ogni commit su main
@@ -72,6 +122,22 @@ Il file .github/workflows/monitoring.yml esegue automaticamente:
 - Ogni giorno alle 2:00 UTC
 
 - Su richiesta manuale
+
+Si tratta di un modulo di monitoraggio continuo per valutare le performance del modello di analisi del sentiment su dati di test o reali.
+
+- Lo script `monitoring/monitoring.py` esegue predizioni batch, salva i risultati in CSV, genera matrici di confusione e un report HTML.
+
+- La pipeline è automatizzata tramite GitHub Actions (`.github/workflows/monitoring.yml`), eseguita:
+  - Su ogni push al branch `main`
+  - Ogni giorno alle 2:00 UTC
+  - Manualmente tramite trigger manuale
+
+I report sono caricati come artifact scaricabili dall’interfaccia Actions di GitHub.
+
+### Avvio manuale del monitoraggio
+
+Dal tab **Actions** su GitHub, seleziona il workflow **Monitoring TweetEval** e clicca su **Run workflow**.
+
 
 📖 Guida rapida per utenti finali
 Inserisci il testo che vuoi analizzare nel modello

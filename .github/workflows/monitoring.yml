@@ -28,11 +28,3 @@ jobs:
 
     - name: Run monitoring test script
       run: python monitoring/monitoring.py
-
-    - uses: actions/upload-artifact@v4
-      with:
-        name: monitoring-reports
-        path: |
-          ./data/sentiment_log.csv
-          ./monitoring/reports/confusion_matrix.png
-          ./monitoring/reports/report.html
