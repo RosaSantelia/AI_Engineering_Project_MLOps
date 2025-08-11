@@ -1,3 +1,1 @@
-transformers
-torch
-gradio==3.44.1
+gradio==3.44.1 
