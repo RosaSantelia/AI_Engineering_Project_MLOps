@@ -71,8 +71,8 @@ Segui questi passaggi per avviare l'API di sentiment analysis in locale.
 
 Clona il repository:
 
-git clone https://github.com/RosaSantelia/AI_Engineering_Projects_MLOps_rivisto.git
-cd AI_Engineering_Projects_MLOps_rivisto
+git clone https://github.com/RosaSantelia/AI_Engineering_Project_MLOps.git
+cd AI_Engineering_Project_MLOps
 
 Costruisci l'immagine Docker:
 
